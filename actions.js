@@ -762,9 +762,9 @@ function countTimer() {
         if(btn.checked==true) {
             challenge=true;
             document.getElementsByClassName("text")[2]="Set your Targets (time limits)  and number of blocks";
-            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Tertiary target (in sec)' value=30></input>");
+            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Tertiary target (in sec)' value=10></input>");
             document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Secondary target (in sec)' value=20></input>");
-            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Primary target (in sec)' value=10></input>");
+            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Primary target (in sec)' value=30></input>");
         }
         else {
           thirdSlide();
@@ -776,8 +776,8 @@ function countTimer() {
     function thirdSlide() {
         var slides=document.getElementsByClassName("full");
         
-        slides[2].innerHTML="<input class='target' id='layering' type='number' placeholder='Number of layers' value=2></input>";
-        slides[2].innerHTML+="<div class='selecter'><label for='gridBox'>Choose the type of grid:</label><select id='gridBox'><option value='0'>3 x 3</option><option selected value='1'>5 x 5</option><option value='2'>7 x 7</option><option value='3'>9 x 9</option></select></div>";
+        slides[2].innerHTML="<input class='target' id='layering' type='number' placeholder='Number of layers'></input>";
+        slides[2].innerHTML+="<div class='selecter'><label for='gridBox'>Choose the type of grid:</label><select id='gridBox'><option value='0'>3 x 3</option><option value='1'>5 x 5</option><option value='2'>7 x 7</option><option value='3'>9 x 9</option></select></div>";
         slides[2].innerHTML+="<button class='target' onclick='setTargets()'>PLAY NOW</button></form>";
         document.getElementsByClassName("text")[2].innerHTML="Set the number of blocks";
     }
