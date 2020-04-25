@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>BLOCK BLASTER</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+</style>
+    <div class='icons'>
+        <img src="images/pausing.jpg" alt="Pause" onclick="pauseGame()">
+        <img src="images/home.png" alt="Home" onclick="location.reload()">
+    </div>
+    <div class="grid">
+        <div class="hideBox1" id='hide1'>
+            <div class='block'>B</div>
+            <div class='block'>L</div>
+            <div class='block'>O</div>
+            <div class='block'>C</div>
+            <div class='block'>K</div>
+        </div>
+        <div class="sourceBox" id="source">
+            
+        </div>
+        
+        <div class="sourceBox2" id="source">
+            
+        </div>
+        <div class="hideBox2" id='hide2'>
+            <div class='block'>B</div>
+            <div class='block'>L</div>
+            <div class='block'>A</div>
+            <div class='block'>S</div>
+            <div class='block'>T</div>
+        </div>
+    </div>
+    <div class="clockBlock">
+        <div class="clock1">
+            <input type="radio" name="timer" id="start" />
+            <input type="radio" name="timer" id="stop" />
+            <input type="radio" name="timer" id="reset" />
+            <!-- Top Button -->
+            <label class="btn red" for="reset"></label>
+            <span class="ring"></span>
+            <div class="btn"></div>
+            
+            <!-- Right Button -->
+            <label class="btn right blue" for="start"></label>   
+            <div class="btn right"></div>
+            
+            <!-- Left Button -->
+            <label class="btn left black" for="stop"></label>
+            <div class="btn left"></div>
+        
+            <div id="timer">TIME</div>
+            
+            <!-- Clock -->
+            <span class="axis tiny"></span>
+            <span class="axis"></span>   
+            <span class="second-hand"></span>
+            <span class="clock-face twelve"></span>
+            <span class="clock-face seconds second-1"></span>
+            <span class="clock-face seconds second-2"></span>
+            <span class="clock-face seconds second-3"></span>
+            <span class="clock-face seconds second-4"></span>
+            <span class="clock-face one"></span>
+            <span class="clock-face seconds second-6"></span>
+            <span class="clock-face seconds second-7"></span>
+            <span class="clock-face seconds second-8"></span>
+            <span class="clock-face seconds second-9"></span>
+            <span class="clock-face two"></span>
+            <span class="clock-face seconds second-11"></span>
+            <span class="clock-face seconds second-12"></span>
+            <span class="clock-face seconds second-13"></span>
+            <span class="clock-face seconds second-14"></span>
+            <span class="clock-face three"></span>
+            <span class="clock-face seconds second-16"></span>
+            <span class="clock-face seconds second-17"></span>
+            <span class="clock-face seconds second-18"></span>
+            <span class="clock-face seconds second-19"></span>
+            <span class="clock-face four"></span>
+            <span class="clock-face seconds second-21"></span>
+            <span class="clock-face seconds second-22"></span>
+            <span class="clock-face seconds second-23"></span>
+            <span class="clock-face seconds second-24"></span>
+            <span class="clock-face five"></span>
+            <span class="clock-face seconds second-26"></span>
+            <span class="clock-face seconds second-27"></span>
+            <span class="clock-face seconds second-28"></span>
+            <span class="clock-face seconds second-29"></span>
+            <span class="clock-face six"></span>
+            <span class="clock-face seconds second-31"></span>
+            <span class="clock-face seconds second-32"></span>
+            <span class="clock-face seconds second-33"></span>
+            <span class="clock-face seconds second-34"></span>
+            <span class="clock-face seven"></span>
+            <span class="clock-face seconds second-36"></span>
+            <span class="clock-face seconds second-37"></span>
+            <span class="clock-face seconds second-38"></span>
+            <span class="clock-face seconds second-39"></span>
+            <span class="clock-face eight"></span>
+            <span class="clock-face seconds second-41"></span>
+            <span class="clock-face seconds second-42"></span>
+            <span class="clock-face seconds second-43"></span>
+            <span class="clock-face seconds second-44"></span>
+            <span class="clock-face nine"></span>
+            <span class="clock-face seconds second-46"></span>
+            <span class="clock-face seconds second-47"></span>
+            <span class="clock-face seconds second-48"></span>
+            <span class="clock-face seconds second-49"></span>
+            <span class="clock-face ten"></span>
+            <span class="clock-face seconds second-51"></span>
+            <span class="clock-face seconds second-52"></span>
+            <span class="clock-face seconds second-53"></span>
+            <span class="clock-face seconds second-54"></span>
+            <span class="clock-face eleven"></span>
+            <span class="clock-face seconds second-56"></span>
+            <span class="clock-face seconds second-57"></span>
+            <span class="clock-face seconds second-58"></span>
+            <span class="clock-face seconds second-59"></span>
+         </div>
+         <div class="details">
+          <span id="time">Time elapsed: 00:00:00</span>
+          <span>Time remaining to: </span>
+           <span>Top the leaderboard: </span>
+           <span>Become a runner-up: </span>
+           <span>Become 2<sup>nd</sup> runner-up: </span>
+         </div>
+         
+        </div><div class="main">
+            <span class="selecting btn1">PLAY GAME</span>
+            <span class="menuButton btn1">INSTRUCTIONS</span>
+            <span class="menuButton btn1">HIGH SCORES</span>
+          </div>
+
+          <div id="flyIn">
+              <div>5</div>
+              <div>4</div>
+              <div>3</div>
+              <div>2</div>
+              <div>1</div>
+          </div>
+          <div class="flyOut play">PLAY NOW</div>
+          <div class="flyOut win"></div>
+
+        <div id="myModal" class="modal1">
+        <div class="modal-content1">
+            <div class="modal-header1">
+            <span class="close1">&times;</span>
+            <h2></h2>
+            </div>
+            <div class="modal-body1" id='bodyMargin'>
+            
+            </div>
+            <div class="modal-footer1">
+            <h5>Made by NITT@edu</h5>
+            </div>
+        </div>
+        <script src="actions.js" charset="utf-8"></script>
+
+    </body>
+    
+    </html>
