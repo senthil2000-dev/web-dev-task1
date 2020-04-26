@@ -753,7 +753,7 @@ body {
    margin-top: 1vh;
    border-radius: 3px 0 0 3px;
    max-width: 30vh;
-   height: 4vh;
+   height: 3vh;
 }
 
 .newInputScore button {
@@ -774,7 +774,6 @@ body {
 }
 
 .modal1 {
-   display: none; 
    position: fixed; 
    z-index: 1; 
    padding: 4vh 0; 
@@ -969,7 +968,6 @@ body {
    width:100%;
    background: cornflowerblue;
    font-family: Verdana, sans-serif;
-   height: 65vh;
  }
  
  .prev, .next {
@@ -1000,8 +998,6 @@ body {
    color: #f2f2f2;
    font-size: 15px;
    padding: 8px 12px;
-   position: absolute;
-   bottom: 8px;
    width: 80%;
    text-align: center;
  }
@@ -1046,6 +1042,7 @@ body {
  
  @media only screen and (max-width: 300px) {
    .prev, .next,.text {font-size: 11px}
+   .details {font-size: 0.85rem;}
  }
  
  .mySlides {display: none}
@@ -1125,6 +1122,42 @@ body {
       margin: 1vh;
    }
  }
+
+ @media only screen and (max-width: 400px) {
+    .clockBlock {
+      bottom: 7vh;
+   }
+ }
+
+ @media only screen and (min-height: 250px) and (max-height: 400px) {
+   .clockBlock {
+     flex-direction: column;
+     left: 0;
+     top: 2vh;
+     font-size: 1.5vw;
+  }
+}
+
+@media only screen and (max-height: 250px){
+   .clockBlock {
+     left: 0;
+     top: 2vh;
+     font-size: 1.5vw;
+  }
+}
+ 
+
+ @media only screen and (max-height: 400px){
+  .details span {
+     line-height: 20px;
+  }
+
+  .details {
+     font-weight: 200;
+  }
+
+  
+}
 
  .toggleDiv label:first-child{
    font-family: cursive;
@@ -1216,6 +1249,7 @@ body {
    background: #08ec2e;
    color: black;
    height: 5vh;
+   cursor: pointer;
  }
 
  input[type=number]:hover::-webkit-inner-spin-button, input[type=number]:focus::-webkit-inner-spin-button {  
@@ -1235,6 +1269,7 @@ body {
     bottom: 0;
     padding: 1vh;
     cursor: pointer;
+    border-radius: 50%;
 }
 
 .icons img:first-child {
@@ -1543,4 +1578,10 @@ body {
 .game-over {
    background-color: red;
    opacity: 0.8;
+}
+
+@media only screen and (max-height: 370px) {
+   button.target, .newInputScore button {
+      height:12vh;
+   }
 }

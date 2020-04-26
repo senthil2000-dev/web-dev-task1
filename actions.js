@@ -1,6 +1,6 @@
 var colors, bool, dateFrom;
-        var startTime, paused=true, totalBefore=0, t, playMode=0, hideMode=false, challenge=false, arrayChallenge=[];
-    
+        var startTime, paused=true, totalBefore=0, t, playMode=0, hideMode=false, challenge=false, arrayChallenge=[], flex2;
+        var audio = new Audio("sounds/alarm.mp3");
         var i=0,j=0,u=0;
         var n=25,scoreInSec, gamePlaying=false;
         var currentButton=0;
@@ -31,6 +31,7 @@ var colors, bool, dateFrom;
         seeSource();
         modals();
         document.querySelector(".icons").style.display="none";
+        document.getElementsByClassName("modal1")[0].style.display="none"
         function playGame() {
             Array.from(document.getElementsByClassName("row")).forEach(element => element.remove());
             oddRowNo=Math.sqrt(n);
@@ -51,6 +52,7 @@ var colors, bool, dateFrom;
             
             removeEventListeners();
             deleteBox();
+            flex2=1;
             var flyIn=document.querySelectorAll("#flyIn div");
             for(var p=0;p<flyIn.length;++p) {
                 flyIn[p].style.animation="switch 10s linear "+(p+0.5)+"s 1";
@@ -300,14 +302,16 @@ var colors, bool, dateFrom;
                 return false;
             }
         }
-
-    function endGame(result) {
+        
+    function endGame(result, timeUp=false) {
         bool=result?true:false;
         console.log(result);
         pauseTimer(bool);
         dateFrom=Date.now();
         document.querySelector(".flyOut.win").style.webkitTextStroke=(result?"2px darkgreen":"2px brown");
         document.querySelector(".flyOut.win").innerHTML=(result?"YOU WIN":"GAME OVER");
+        if(timeUp)
+            document.querySelector(".flyOut.win").innerHTML="TIME UP";
         document.querySelector(".flyOut.win").style.color=(result?"green":"red");
         document.querySelector(".flyOut.win").style.display = '';
         document.querySelector(".flyOut.win").style.animation="out 4s linear 1";
@@ -320,31 +324,28 @@ var colors, bool, dateFrom;
 
     function submitScore() {
         deleteBox();
+        loseText = challenge? "within" : "this";
         document.querySelector(".flyOut.win").style.display = 'none';
-        if(challenge==true && arrayChallenge[2].scoreInMillisec<totalBefore) {
-            document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>But sorry you couldn't make it within time</span><button onclick='tryAgain()'>TRY AGAIN</button></input>";
-        }
-        else if(challenge == true) {
-            document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>You made it within time!</span><button onclick='location.reload()'>HOME</button></input>";
-        }
-        else {
           if(bool) {
-            var q;
-            var topScores=JSON.parse(localStorage.getItem("scores") || "[]");
-            
-            for (q = 0; q < topScores.length; q++) {
-                if(topScores[q].scoreInMillisec*layers*n*multiplier>totalBefore)
-                    break;
+            if(challenge == true) {
+                document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>You made it within time!</span><button onclick='location.reload()'>HOME</button></input>";
             }
-            if(q<5)
-                document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><label for='submitName'>SUBMIT YOUR SCORE:</label><br><input name = 'submitName' type = 'text' id = 'submitName' placeholder='Enter your name' required><button onclick='storeHighScore(" +q+ "," +dateFrom+ ")'>Submit</button></div>";
-            else
-                document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>But sorry you couldn't make it to the top five</span><button onclick='tryAgain()'>TRY AGAIN</button></input>";
-            }  
-        }
-        
-        if(!bool) {
-            document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>Sorry you couldn't make it this time</span><button onclick='tryAgain()'>TRY AGAIN</button></input>";
+            else {
+                var q;
+                var topScores=JSON.parse(localStorage.getItem("scores") || "[]");
+                
+                for (q = 0; q < topScores.length; q++) {
+                    if(topScores[q].scoreInMillisec*layers*n*multiplier>totalBefore)
+                        break;
+                }
+                if(q<5)
+                    document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><label for='submitName'>SUBMIT YOUR SCORE:</label><br><input name = 'submitName' type = 'text' id = 'submitName' placeholder='Enter your name' required><button onclick='storeHighScore(" +q+ "," +dateFrom+ ")'>Submit</button></div>";
+                else
+                    document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>But sorry you couldn't make it to the top five</span><button onclick='tryAgain()'>TRY AGAIN</button></input>";
+                }  
+            }
+        else {
+            document.getElementsByClassName("grid")[0].innerHTML+="<div class ='newInputScore' id='inputName'><span>Sorry you couldn't make it " +loseText+ " time</span><button onclick='tryAgain()'>TRY AGAIN</button></input>";
         }
     }
 
@@ -354,6 +355,7 @@ var colors, bool, dateFrom;
         if(submitValue.trim()!="") {
             var totalTime=formatTime(totalBefore);
             var timePerBlock=totalBefore/(layers*n*multiplier);
+            timePerBlock=Number(timePerBlock.toFixed(2));
             formattedTimePerBlock=formatTime(timePerBlock);
             var totalArray = totalTime.split(":");
             var timePerBlockArray = formattedTimePerBlock.split(":");
@@ -557,15 +559,14 @@ function showSlides(n) {
 function countTimer() {
         var now = Date.now();
         var totalMilliSeconds=totalBefore+now-startTime;
-        timeRemaining(totalMilliSeconds);
         var timeElapsed=formatTime(totalMilliSeconds).slice(0, formatTime(totalMilliSeconds).lastIndexOf(":"));
         document.getElementById("timer").innerHTML = timeElapsed;
         document.getElementById("time").innerHTML = "Time elapsed:" + timeElapsed;
         t = setTimeout(countTimer, 100);
+        timeRemaining(totalMilliSeconds);
     }
 
     function timeRemaining(totalMilliSeconds, pausedTimer=false) {
-      var audio;
       var topScores=JSON.parse(localStorage.getItem("scores") || "[]").slice(0, 3);
       arrayStrings=["Top the leaderboard: ", "Become a runner-up: ", "Become 2<sup>nd</sup> runner-up: "];
       if(challenge) {
@@ -584,22 +585,27 @@ function countTimer() {
            var updateTime=formatTime(diff).slice(0, formatTime(diff).lastIndexOf(":"));
             document.querySelectorAll(".details span")[i+2].innerHTML=arrayStrings[i] + updateTime;
             if(diff<=6000 && j==0) {
+                console.log("no");
                 document.querySelectorAll(".details span")[i+2].classList.add("alert");
+                document.getElementsByClassName("clock1")[0].classList.add("blinking");
+                console.log(flex2);
+                if(flex2||audio.ended||audio.paused) {
+                    audio.play(); 
+                    flex2=0
+                }
                 j++;
             } 
         }
         else {
-            document.querySelectorAll(".details span")[i+2].style.display="none"; 
+            document.querySelectorAll(".details span")[i+2].style.display="none";
+            document.getElementsByClassName("clock1")[0].classList.remove("blinking");
+            audio.pause();
             k++;
         }
       }
-      if(k==2) {
-          document.getElementsByClassName("clock1")[0].classList.add("blinking");
-          audio = new Audio("sounds/alarm.mp3");
-          audio.play();
-      }
       if(k==3){
          document.querySelectorAll(".details span")[1].style.display="none";
+         endGame(false, true);
       }
       if(pausedTimer) {
         document.getElementsByClassName("clock1")[0].classList.remove("blinking");
@@ -631,17 +637,21 @@ function countTimer() {
       startTime = Date.now();
       paused=false;
       countTimer();
+      console.log("no1");
     }
   }
 
   function pauseTimer(end=true) {
     document.getElementsByClassName("black")[0].click();
     if(!paused) {
+    console.log("2");console.log(t);
       clearTimeout(t);
+      
+      console.log(t);
       totalBefore+=Date.now()-startTime;
       paused=true;
-      if(end)
-          timeRemaining(totalBefore, true);
+      if(end) 
+          timeRemaining(totalBefore, true);          
     }
   }
 
@@ -658,7 +668,7 @@ function countTimer() {
   }
 
   document.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13)
+  if (event.keyCode === 13 && document.getElementsByClassName("modal1")[0].style.display=="none")
     document.getElementsByClassName("selecting")[0].click();
 });
 
@@ -741,6 +751,9 @@ function countTimer() {
         }
 
         if(button.textContent=="PLAY GAME") {
+            challenge=false;
+            playMode=false;
+            hideMode=false;
             modalheading.textContent="DIFFICULTY MODES";
             modalbody.innerHTML="<div class='slideshow-container'><div class='mySlides fade'><div class='numbertext'>1 / 3</div><div class='full flexing'></div><div class='text'>Select your color:</div></div><div class='mySlides fade'><div class='numbertext'>2 / 3</div><div class='full'></div><div class='text'>Select your game mode:</div></div><div class='mySlides fade'><div class='numbertext'>3 / 3</div><div class='full inputDiv'></div><div class='text'>Caption Three</div></div><a class='prev' onclick='plusSlides(-1)'>&#10094;</a><a class='next' onclick='plusSlides(1)'>&#10095;</a></div><br>";
             modalbody.innerHTML+="<div style='text-align:center'><span class='dot' onclick='currentSlide(1)'></span><span class='dot' onclick='currentSlide(2)'></span><span class='dot' onclick='currentSlide(3)'></span></div>";
@@ -761,10 +774,10 @@ function countTimer() {
     function status(btn) {
         if(btn.checked==true) {
             challenge=true;
-            document.getElementsByClassName("text")[2]="Set your Targets (time limits)  and number of blocks";
-            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Tertiary target (in sec)' value=10></input>");
+            document.getElementsByClassName("text")[2].innerHTML="Set your Targets (time limits)  and number of blocks";
+            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Tertiary target (in sec)' value=30></input>");
             document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Secondary target (in sec)' value=20></input>");
-            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Primary target (in sec)' value=30></input>");
+            document.getElementsByClassName("full")[2].insertAdjacentHTML("afterBegin", "<input class='target' type='number' placeholder='Primary target (in sec)' value=10></input>");
         }
         else {
           thirdSlide();
@@ -776,8 +789,8 @@ function countTimer() {
     function thirdSlide() {
         var slides=document.getElementsByClassName("full");
         
-        slides[2].innerHTML="<input class='target' id='layering' type='number' placeholder='Number of layers'></input>";
-        slides[2].innerHTML+="<div class='selecter'><label for='gridBox'>Choose the type of grid:</label><select id='gridBox'><option value='0'>3 x 3</option><option value='1'>5 x 5</option><option value='2'>7 x 7</option><option value='3'>9 x 9</option></select></div>";
+        slides[2].innerHTML="<input class='target' id='layering' type='number' placeholder='Number of layers' value=2></input>";
+        slides[2].innerHTML+="<div class='selecter'><label for='gridBox'>Choose the type of grid:</label><select id='gridBox'><option value='0'>3 x 3</option><option selected value='1'>5 x 5</option><option value='2'>7 x 7</option><option value='3'>9 x 9</option></select></div>";
         slides[2].innerHTML+="<button class='target' onclick='setTargets()'>PLAY NOW</button></form>";
         document.getElementsByClassName("text")[2].innerHTML="Set the number of blocks";
     }
@@ -790,6 +803,7 @@ function countTimer() {
     }
 
     function setTargets() {
+        var invalid=false;
         var e=document.getElementById("gridBox");
         var strUser = e.options[e.selectedIndex].value;
         n=(3+2*strUser)*(3+2*strUser);
@@ -800,13 +814,20 @@ function countTimer() {
             var topScores=new Array();
             var inputs = document.getElementsByClassName("target");
             for(var i=0; i<3; ++i) {
+                if(i!=0 && inputs[i].value<inputs[i-1].value) {
+                    alert("primary target > secondary target > tertiary target is the order");
+                    arrayChallenge=[];
+                    invalid=true;
+                    break;
+                }
                 var playerActive= {scoreInMillisec: (inputs[i].value*1000)/(multiplier*n*layers)};
                 arrayChallenge.push(playerActive);
             } 
         }
-        document.getElementsByClassName("close1")[0].click();
-        playGame();
-        
+        if(!invalid) {
+           document.getElementsByClassName("close1")[0].click();
+            playGame(); 
+        }  
     }
     function colorUpdate(btn) {
         color=btn.id;
