@@ -815,7 +815,7 @@ function countTimer() {
             var inputs = document.getElementsByClassName("target");
             for(var i=0; i<3; ++i) {
                 if(i!=0 && inputs[i].value<inputs[i-1].value) {
-                    alert("primary target > secondary target > tertiary target is the order");
+                    alert("primary target < secondary target < tertiary target is the order");
                     arrayChallenge=[];
                     invalid=true;
                     break;
