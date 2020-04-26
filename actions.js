@@ -161,7 +161,7 @@ var colors, bool, dateFrom;
         }
 
         function go(firstCall){
-            if(!firstCall && playMode==1)
+            if(playMode==1)
                 addText();
             var wide = (document.querySelector(".grid").clientWidth/oddRowNo);
             document.getElementsByClassName("hideBox1")[0].style.left = -(wide) + "px";
@@ -605,7 +605,8 @@ function countTimer() {
       }
       if(k==3){
          document.querySelectorAll(".details span")[1].style.display="none";
-         endGame(false, true);
+         if(challenge)
+            endGame(false, true);
       }
       if(pausedTimer) {
         document.getElementsByClassName("clock1")[0].classList.remove("blinking");
